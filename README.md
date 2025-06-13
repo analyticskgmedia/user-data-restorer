@@ -90,6 +90,105 @@ To ensure user data is available before other tags fire:
 2. Enhanced conversion tags fire with user data
 ```
 
+## Setting Up Variables in GTM
+
+### Required Data Layer Variables
+
+After installing the template, create these **Data Layer Variables** in GTM to access restored data:
+
+| Variable Name | Data Layer Variable Name | Description |
+|---------------|--------------------------|-------------|
+| `userData - Email` | `userData.email` | Original email address |
+| `userData - Email Hashed` | `userData.email_hashed` | SHA-256 hashed email (GDPR compliant) |
+| `userData - Phone` | `userData.phone` | Original phone number |
+| `userData - Phone Hashed` | `userData.phone_hashed` | SHA-256 hashed phone (GDPR compliant) |
+| `userData - First Name` | `userData.firstName` | User's first name |
+| `userData - Last Name` | `userData.lastName` | User's last name |
+| `userData - Country` | `userData.country` | User's country |
+| `userData - City` | `userData.city` | User's city |
+| `userData - Address` | `userData.address` | User's address |
+| `userData - Postal Code` | `userData.postalCode` | User's postal/zip code |
+
+### User-Provided Data Variable (Essential for Advertising)
+
+Create a **User-Provided Data variable** for enhanced conversions using restored data:
+
+1. **Go to Variables** → **New** → **User-Defined Variables**
+2. **Choose Variable Type:** `User-Provided Data`
+3. **Configure fields:**
+
+#### For GDPR Mode (EU Clients - Recommended):
+```
+Variable Name: "User Data - Enhanced Conversions"
+
+Configuration:
+├── Email Address: {{userData - Email Hashed}}
+├── Phone Number: {{userData - Phone Hashed}}
+├── Address - First Name: {{userData - First Name}}
+├── Address - Last Name: {{userData - Last Name}}
+├── Address - Street: {{userData - Address}}
+├── Address - City: {{userData - City}}
+├── Address - Postal Code: {{userData - Postal Code}}
+└── Address - Country: {{userData - Country}}
+```
+
+#### For Non-GDPR Mode:
+```
+Variable Name: "User Data - Enhanced Conversions"
+
+Configuration:
+├── Email Address: {{userData - Email}}
+├── Phone Number: {{userData - Phone}}
+├── Address - First Name: {{userData - First Name}}
+├── Address - Last Name: {{userData - Last Name}}
+├── Address - Street: {{userData - Address}}
+├── Address - City: {{userData - City}}
+├── Address - Postal Code: {{userData - Postal Code}}
+└── Address - Country: {{userData - Country}}
+```
+
+### Conversion Tag Setup with Tag Sequencing
+
+#### Google Ads Enhanced Conversions:
+1. **Open your Google Ads Conversion tag**
+2. **Advanced Settings** → **Tag Sequencing**
+3. **Setup Tag:** Select "User Data Restorer"
+4. **Enhanced Conversions** → **User-provided data from your website**
+5. **Select:** `{{User Data - Enhanced Conversions}}`
+
+#### Facebook Conversions API:
+```javascript
+// Configure tag sequencing first, then use:
+'user_data': {
+  'em': [{{userData - Email Hashed}}],      // Restored hashed email
+  'ph': [{{userData - Phone Hashed}}],      // Restored hashed phone
+  'fn': [{{userData - First Name}}],        // Restored first name
+  'ln': [{{userData - Last Name}}],         // Restored last name
+  'ct': [{{userData - City}}],              // Restored city
+  'country': [{{userData - Country}}]       // Restored country
+}
+```
+
+#### GA4 Enhanced Ecommerce:
+```javascript
+// Ensure User Data Restorer fires first via tag sequencing
+gtag('event', 'purchase', {
+  'transaction_id': '12345',
+  'value': 25.42,
+  'currency': 'USD',
+  'user_data': {
+    'email_address': {{userData - Email Hashed}},
+    'phone_number': {{userData - Phone Hashed}},
+    'address': {
+      'first_name': {{userData - First Name}},
+      'last_name': {{userData - Last Name}},
+      'country': {{userData - Country}}
+    }
+  }
+});
+```
+
+
 ## Restored Data Structure
 
 ### Standard Restoration
@@ -165,7 +264,7 @@ if (currentTime - dataTimestamp > maxAgeMs) {
 
 3. **Set up triggers**:
    ```
-   User Data Listener:    Form submissions
+   User Data Listener:    Form submissions, clicks
    User Data Restorer:    Page View - All Pages (high priority)
    ```
 
@@ -183,7 +282,6 @@ dataLayer Population → Other Tags Access User Data
 The template pushes these events to dataLayer:
 
 - `userData.restored`: Fired when user data is successfully restored from localStorage
-
 
 ### Memory Usage
 - ✅ Small data footprint
@@ -205,7 +303,6 @@ The template pushes these events to dataLayer:
 - ✅ Secure localStorage usage
 - ✅ Data age validation
 - ✅ No external dependencies
-
 
 ## License
 
