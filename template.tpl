@@ -151,12 +151,15 @@ const Math = require('Math');
 const adStorageGranted = isConsentGranted('ad_storage');
 const analyticsStorageGranted = isConsentGranted('analytics_storage');
 const adUserDataGranted = isConsentGranted('ad_user_data');
+const adPersonalizationGranted = isConsentGranted('ad_personalization');
 
 // Determine if we should proceed based on consent
 let shouldProceed = false;
 
 // We need at least analytics consent to restore data
-if (analyticsStorageGranted || (adStorageGranted && adUserDataGranted)) {
+// For full advertising functionality, we need all advertising consent types
+if (analyticsStorageGranted || 
+    (adStorageGranted && adUserDataGranted && adPersonalizationGranted)) {
   shouldProceed = true;
 }
 
@@ -165,7 +168,8 @@ if (!shouldProceed) {
     log('User Data Restorer: Insufficient consent granted. Current consent state:', {
       ad_storage: adStorageGranted,
       analytics_storage: analyticsStorageGranted,
-      ad_user_data: adUserDataGranted
+      ad_user_data: adUserDataGranted,
+      ad_personalization: adPersonalizationGranted
     });
   }
   data.gtmOnSuccess();
@@ -532,6 +536,37 @@ ___WEB_PERMISSIONS___
                   {
                     "type": 1,
                     "string": "ad_user_data"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  }
+                ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "consentType"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "ad_personalization"
                   },
                   {
                     "type": 8,
