@@ -1,7 +1,7 @@
 homepage: "https://github.com/analyticskgmedia/user-data-restorer"
 documentation: "https://github.com/analyticskgmedia/user-data-restorer/blob/main/README.md"
 versions:
-  - sha: "3bcaf64b3a384277045edd520557896d48ff4c41"
+  - sha: "d66381e485954174c37a8912eb01db11c8df1b56"
     changeNotes: |
       Initial release of User Data Restorer Template
       - Cross-page user data persistence via localStorage restoration
