@@ -232,6 +232,13 @@ gtag('event', 'purchase', {
 }
 ```
 
+### Consent Integration
+The template respects Google Consent Mode:
+- `analytics_storage`: Required for localStorage
+- `ad_storage` + `ad_user_data` + `ad_personalization`: Required for full advertising functionality  
+- Automatically stops processing if consent denied
+- Supports granular user control over data usage
+
 ## Data Age Management
 
 ### Automatic Expiration
@@ -303,6 +310,7 @@ The template pushes these events to dataLayer:
 - ✅ Secure localStorage usage
 - ✅ Data age validation
 - ✅ No external dependencies
+
 
 ## License
 
