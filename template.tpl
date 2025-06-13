@@ -321,23 +321,29 @@ const restoreUserData = function() {
   
   let hasDataToRestore = false;
   
-  // Restore email data
-  if (data.restoreEmail && userData.email) {
-    eventData['userData.email'] = userData.email;
-    hasDataToRestore = true;
+  // Restore email data (check for both original and hashed)
+  if (data.restoreEmail) {
+    if (userData.email) {
+      eventData['userData.email'] = userData.email;
+      hasDataToRestore = true;
+    }
     
     if (data.restoreHashed && userData.email_hashed) {
       eventData['userData.email_hashed'] = userData.email_hashed;
+      hasDataToRestore = true;
     }
   }
   
-  // Restore phone data
-  if (data.restorePhone && userData.phone) {
-    eventData['userData.phone'] = userData.phone;
-    hasDataToRestore = true;
+  // Restore phone data (check for both original and hashed)
+  if (data.restorePhone) {
+    if (userData.phone) {
+      eventData['userData.phone'] = userData.phone;
+      hasDataToRestore = true;
+    }
     
     if (data.restoreHashed && userData.phone_hashed) {
       eventData['userData.phone_hashed'] = userData.phone_hashed;
+      hasDataToRestore = true;
     }
   }
   
