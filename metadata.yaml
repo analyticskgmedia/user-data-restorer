@@ -1,0 +1,17 @@
+homepage: "https://github.com/analyticskgmedia/user-data-restorer"
+documentation: "https://github.com/analyticskgmedia/user-data-restorer/blob/main/README.md"
+versions:
+  - sha: "initial-release"
+    changeNotes: |
+      Initial release of User Data Restorer Template
+      - Cross-page user data persistence via localStorage restoration
+      - Seamless integration with User Data Listener template
+      - Age-based data validation with configurable expiration
+      - Selective data restoration with granular filter controls
+      - Google Consent Mode v2 compliance and integration
+      - High-priority execution designed for tag sequencing
+      - Comprehensive debugging and logging capabilities
+      - Performance optimized for minimal page load impact
+      - GDPR-compliant data handling with cleanup options
+      - Support for both original and hashed data restoration
+      - Automatic data freshness validation and cleanup
